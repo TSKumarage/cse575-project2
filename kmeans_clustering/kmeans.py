@@ -57,6 +57,7 @@ class KMeans:
                     xi_distance = sum([self.distance(x_i, prev_centroids) for prev_centroids in centroids])
 
                     if xi_distance > max_distance:
+                        # select the data-point with the maximum distance to already selected centroids
                         max_distance = xi_distance
                         max_dist_centroid = x_i
                 centroids[i] = max_dist_centroid
@@ -131,6 +132,3 @@ class KMeans:
 
         self.centroids = centroids
 
-
-if __name__ == '__main__':
-    main()
