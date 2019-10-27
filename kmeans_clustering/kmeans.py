@@ -3,22 +3,12 @@ Authors : Kumarage Tharindu & Fan Lei
 Class : CSE 575
 Organization : ASU CIDSE
 Project : SML Project 2
-Task : File reader : Provider other package the access to read the data
+Task : Implementation of k-means
 
 """
 
 import numpy as np
-import data.data_wrapper as extrct
 import copy
-
-def main():  # This main() function is used to test the LR Classifier implementation
-    data = extrct.read_data()
-
-    model = KMeans(k=3, init_strategy=2, distance_criteria="Euclidean")
-
-    model.cluster(data)
-
-    print(model.centroids)
 
 
 class KMeans:
@@ -78,13 +68,13 @@ class KMeans:
             return np.linalg.norm(x-y, ord=2)
 
     def cluster(self, x, display=True):
-        #  Train the classifier
+        #  Cluster the data-points
         print()
         print("k-means clustering on data..")
 
         print("Initializing centroids..")
 
-        centroids = self.centroid_initialize(x)
+        centroids = self.centroid_initialize(x)  # get the initial centroids
 
         print("Initial centroids: ")
 
@@ -107,7 +97,7 @@ class KMeans:
                 cluster_x_i = 0
                 for c in centroids:
                     dist = self.distance(c, x_i)
-                    if (dist < min_distance):
+                    if dist < min_distance:  # assign the data-point to the centroid with minimum distance
                         cluster_x_i = cluster_no
                         min_distance = dist
                     cluster_no += 1
@@ -118,16 +108,16 @@ class KMeans:
             if display:  # Print the error in each iteration
                 print("Iteration: ", iteration, " -- Objective function value: ", self.objective_func_val(clusters))
 
-            # Recompute centroids for ecah cluster
+            # Recompute centroids for each cluster
             centroids = list()
             convergent = True
 
             for i in range(self.k):
                 data_points = clusters[i][1]
                 data_points.append(clusters[i][0])  # Include centroid
-                new_centroid = np.mean(np.array(data_points), axis=0)
+                new_centroid = np.mean(np.array(data_points), axis=0)  # mean as the new centroid
 
-                if not ((new_centroid == clusters[i][0]).all()):
+                if not ((new_centroid == clusters[i][0]).all()):  # if even one center is changing convergence false
                     convergent = False
 
                 centroids.append(new_centroid)

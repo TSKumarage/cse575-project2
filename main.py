@@ -15,7 +15,7 @@ from matplotlib import pyplot as plt
 from matplotlib import colors as mcolors
 
 
-def main():
+def main():  # Execute all the tasks asked in the project
     data = extrct.read_data()
 
     strategies = [1, 2]
@@ -41,6 +41,19 @@ def main():
             plt.ylabel('Objective function value')
             plt.plot(num_clusters, objective_func_vals, marker='o')
             plt.show()
+
+    # Plot clusters for k=9
+    model = kmeans.KMeans(k=9, init_strategy=1, distance_criteria="Euclidean")
+
+    model.cluster(data, display=False)
+
+    plot_cluster(model.clusters, model.centroids, num_cluster=9)
+
+    model = kmeans.KMeans(k=9, init_strategy=1, distance_criteria="Euclidean")
+
+    model.cluster(data, display=False)
+
+    plot_cluster(model.clusters, model.centroids, num_cluster=9)
 
 
 def get_colors(num_colors):
