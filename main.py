@@ -42,6 +42,14 @@ def main():  # Execute all the tasks asked in the project
             plt.plot(num_clusters, objective_func_vals, marker='o')
             plt.show()
 
+            print("------- Final Report of the Test Run------")
+            print("{:^20} | {:^25}".format("Number of Clusters", "Objective Function Value"))
+            format_srt = "{:^20} | {:^25.2f}"
+            for k in num_clusters:
+                print(format_srt.format(k, objective_func_vals[k-2]))
+
+            print("")
+
     # Plot clusters for k=9
     model = kmeans.KMeans(k=9, init_strategy=1, distance_criteria="Euclidean")
 
@@ -49,17 +57,20 @@ def main():  # Execute all the tasks asked in the project
 
     plot_cluster(model.clusters, model.centroids, num_cluster=9)
 
-    model = kmeans.KMeans(k=9, init_strategy=1, distance_criteria="Euclidean")
+    model = kmeans.KMeans(k=9, init_strategy=2, distance_criteria="Euclidean")
 
     model.cluster(data, display=False)
 
     plot_cluster(model.clusters, model.centroids, num_cluster=9)
 
 
-def get_colors(num_colors):
+def get_colors(num_colors, rand=True):
 
-    colors = list(mcolors.CSS4_COLORS.values())
-    colors.remove('#000000')
+    if rand:
+        colors = list(mcolors.CSS4_COLORS.values())
+        colors.remove('#000000')
+    else:
+        colors = ['r', 'g', 'b', 'c', 'm', 'y', 'peru', 'darkorange', 'slategrey', 'brown']
 
     return [colors[i] for i in random.sample(range(len(colors)), num_colors)]
 
@@ -67,7 +78,7 @@ def get_colors(num_colors):
 def plot_cluster(clusters, centroid_list, num_cluster):
     # loop through each cluster
 
-    custom_palette = get_colors(num_colors=num_cluster)
+    custom_palette = get_colors(num_colors=num_cluster, rand=False)
 
     for i, label in enumerate(clusters.keys()):
         # add data points
@@ -89,8 +100,10 @@ def plot_cluster(clusters, centroid_list, num_cluster):
 
     plt.scatter(x=x,
                 y=y,
+                marker='v',
+                s=60,
                 color='#000000',
-                alpha=0.9)
+                alpha=0.7)
     plt.grid(True)
     plt.show()
 
