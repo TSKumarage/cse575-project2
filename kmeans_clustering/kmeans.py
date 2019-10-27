@@ -9,7 +9,7 @@ Task : File reader : Provider other package the access to read the data
 
 import numpy as np
 import data.data_wrapper as extrct
-
+import copy
 
 def main():  # This main() function is used to test the LR Classifier implementation
     data = extrct.read_data()
@@ -28,14 +28,6 @@ class KMeans:
         self.distance_criteria = distance_criteria
         self.centroids= None
         self.clusters = None
-
-    def logit_sigmoid(self, x, w):
-        # Sigmoid function matrix form implementation
-        regression_value = np.dot(x, w)
-
-        sigmoid = 1.0 / (1 + np.exp(-regression_value))
-
-        return sigmoid
 
     def objective_func_val(self, clusters):
         # Calculate sum-of-squared-error for each cluster and get the total sum
@@ -87,13 +79,18 @@ class KMeans:
 
     def cluster(self, x, display=True):
         #  Train the classifier
-
+        print()
         print("k-means clustering on data..")
 
         print("Initializing centroids..")
 
         centroids = self.centroid_initialize(x)
 
+        print("Initial centroids: ")
+
+        for i in range(self.k):
+            print("C{} ".format(i), "({:.3f},{:.3f})".format(centroids[i][0], centroids[i][1]))
+        print()
         print("Clustering data..")
         clusters = {}
         for i in range(self.k):
@@ -115,6 +112,8 @@ class KMeans:
                         min_distance = dist
                     cluster_no += 1
                 clusters[cluster_x_i][1].append(x_i)
+
+            self.clusters = copy.deepcopy(clusters)
 
             if display:  # Print the error in each iteration
                 print("Iteration: ", iteration, " -- Objective function value: ", self.objective_func_val(clusters))
@@ -141,7 +140,6 @@ class KMeans:
                 break
 
         self.centroids = centroids
-        self.clusters = clusters
 
 
 if __name__ == '__main__':
